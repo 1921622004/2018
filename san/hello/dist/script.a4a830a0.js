@@ -77,7 +77,7 @@ parcelRequire = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({15:[function(require,module,exports) {
+})({6:[function(require,module,exports) {
 /**
  * San
  * Copyright 2016 Baidu Inc. All rights reserved.
@@ -9297,7 +9297,7 @@ function camelComponentBinds(binds) {
     // #[end]
 })(this);
 
-},{}],5:[function(require,module,exports) {
+},{}],4:[function(require,module,exports) {
 'use strict';
 
 var _san = require('san');
@@ -9318,7 +9318,7 @@ var MyApp = _san2.default.defineComponent({
 
 var myApp = new MyApp();
 myApp.attach(document.body);
-},{"san":15}],14:[function(require,module,exports) {
+},{"san":6}],8:[function(require,module,exports) {
 
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -9348,7 +9348,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '6796' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '10492' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -9487,5 +9487,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[14,5])
-//# sourceMappingURL=/script.41a294c8.map
+},{}]},{},[8,4])
+//# sourceMappingURL=/script.a4a830a0.map
