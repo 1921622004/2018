@@ -1,13 +1,11 @@
 import san from 'san';
 var MyApp = san.defineComponent({
-    template: `<p>hello {{name}}!</p>`,
+    template: '<ul><li s-for="item in list">{{item}}</li></ul>',
 
-    initData: function () {
-        return {
-            name: 'san'
-        };
+    attached: function () {
+        this.data.set('list', ['san', 'er', 'esui', 'etpl', 'esl']);
     }
 });
 
 var myApp = new MyApp();
-myApp.attach(document.body)
+myApp.attach(document.body);
