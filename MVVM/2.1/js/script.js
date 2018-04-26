@@ -33,9 +33,9 @@ var MyApp = san.defineComponent({
         })
     },
     person:DataTypes.shape({
-        name:String,
-        age:Number,
-        des:String
+        name:san.DataTypes.string,
+        age:san.DataTypes.age,
+        des:san.DataTypes.string
     }),
     del: function () {
         var person = this.data.get('person');
