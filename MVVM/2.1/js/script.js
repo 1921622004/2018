@@ -20,8 +20,8 @@ var MyApp = san.defineComponent({
             name:'',
             age:'',
             des:'',
-        }),
-        this.updateNumber();
+        })
+        // this.updateNumber();
     },
     updateNumber:function(data){
         this.data.apply('person',function(person){
@@ -33,9 +33,9 @@ var MyApp = san.defineComponent({
         })
     },
     person:DataTypes.shape({
-        name:san.DataTypes.string,
-        age:san.DataTypes.age,
-        des:san.DataTypes.string
+        name:DataTypes.string,
+        age:DataTypes.age,
+        des:DataTypes.string
     }),
     del: function () {
         var person = this.data.get('person');
