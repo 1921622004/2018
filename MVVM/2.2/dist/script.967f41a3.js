@@ -1,3 +1,83 @@
+// modules are defined as an array
+// [ module function, map of requires ]
+//
+// map of requires is short require name -> numeric require
+//
+// anything defined in a previous bundle is accessed via the
+// orig method which is the require for previous bundles
+
+// eslint-disable-next-line no-global-assign
+parcelRequire = (function (modules, cache, entry) {
+  // Save the require from previous bundle to this closure if any
+  var previousRequire = typeof parcelRequire === 'function' && parcelRequire;
+  var nodeRequire = typeof require === 'function' && require;
+
+  function newRequire(name, jumped) {
+    if (!cache[name]) {
+      if (!modules[name]) {
+        // if we cannot find the module within our internal map or
+        // cache jump to the current global require ie. the last bundle
+        // that was added to the page.
+        var currentRequire = typeof parcelRequire === 'function' && parcelRequire;
+        if (!jumped && currentRequire) {
+          return currentRequire(name, true);
+        }
+
+        // If there are other bundles on this page the require from the
+        // previous one is saved to 'previousRequire'. Repeat this as
+        // many times as there are bundles until the module is found or
+        // we exhaust the require chain.
+        if (previousRequire) {
+          return previousRequire(name, true);
+        }
+
+        // Try the node require function if it exists.
+        if (nodeRequire && typeof name === 'string') {
+          return nodeRequire(name);
+        }
+
+        var err = new Error('Cannot find module \'' + name + '\'');
+        err.code = 'MODULE_NOT_FOUND';
+        throw err;
+      }
+
+      localRequire.resolve = resolve;
+
+      var module = cache[name] = new newRequire.Module(name);
+
+      modules[name][0].call(module.exports, localRequire, module, module.exports);
+    }
+
+    return cache[name].exports;
+
+    function localRequire(x){
+      return newRequire(localRequire.resolve(x));
+    }
+
+    function resolve(x){
+      return modules[name][1][x] || x;
+    }
+  }
+
+  function Module(moduleName) {
+    this.id = moduleName;
+    this.bundle = newRequire;
+    this.exports = {};
+  }
+
+  newRequire.isParcelRequire = true;
+  newRequire.Module = Module;
+  newRequire.modules = modules;
+  newRequire.cache = cache;
+  newRequire.parent = previousRequire;
+
+  for (var i = 0; i < entry.length; i++) {
+    newRequire(entry[i]);
+  }
+
+  // Override the current require with this new one
+  return newRequire;
+})({7:[function(require,module,exports) {
 /**
  * San
  * Copyright 2016 Baidu Inc. All rights reserved.
@@ -4112,16 +4192,16 @@ function warnSetHTML(el) {
  */
 
 // #[begin] reverse
-// /**
-//  * 判断是否结束桩
-//  *
-//  * @param {HTMLElement|HTMLComment} target 要判断的元素
-//  * @param {string} type 桩类型
-//  * @return {boolean}
-//  */
-// function isEndStump(target, type) {
-//     return target.nodeType === 8 && target.data === '/s-' + type;
-// }
+/**
+ * 判断是否结束桩
+ *
+ * @param {HTMLElement|HTMLComment} target 要判断的元素
+ * @param {string} type 桩类型
+ * @return {boolean}
+ */
+function isEndStump(target, type) {
+    return target.nodeType === 8 && target.data === '/s-' + type;
+}
 // #[end]
 
 // exports = module.exports = isEndStump;
@@ -4136,51 +4216,51 @@ function warnSetHTML(el) {
 // var NodeType = require('./node-type');
 
 // #[begin] reverse
-// /**
-//  * 获取节点在组件树中的路径
-//  *
-//  * @param {Node} node 节点对象
-//  * @return {Array}
-//  */
-// function getNodePath(node) {
-//     var nodePaths = [];
-//     var nodeParent = node;
-//     while (nodeParent) {
-//         switch (nodeParent.nodeType) {
-//             case NodeType.ELEM:
-//                 nodePaths.unshift(nodeParent.tagName);
-//                 break;
-// 
-//             case NodeType.IF:
-//                 nodePaths.unshift('if');
-//                 break;
-// 
-//             case NodeType.FOR:
-//                 nodePaths.unshift('for[' + nodeParent.anode.directives['for'].raw + ']'); // eslint-disable-line dot-notation
-//                 break;
-// 
-//             case NodeType.SLOT:
-//                 nodePaths.unshift('slot[' + (nodeParent.name || 'default') + ']');
-//                 break;
-// 
-//             case NodeType.TPL:
-//                 nodePaths.unshift('template');
-//                 break;
-// 
-//             case NodeType.CMPT:
-//                 nodePaths.unshift('component[' + (nodeParent.subTag || 'root') + ']');
-//                 break;
-// 
-//             case NodeType.TEXT:
-//                 nodePaths.unshift('text');
-//                 break;
-//         }
-// 
-//         nodeParent = nodeParent.parent;
-//     }
-// 
-//     return nodePaths;
-// }
+/**
+ * 获取节点在组件树中的路径
+ *
+ * @param {Node} node 节点对象
+ * @return {Array}
+ */
+function getNodePath(node) {
+    var nodePaths = [];
+    var nodeParent = node;
+    while (nodeParent) {
+        switch (nodeParent.nodeType) {
+            case NodeType.ELEM:
+                nodePaths.unshift(nodeParent.tagName);
+                break;
+
+            case NodeType.IF:
+                nodePaths.unshift('if');
+                break;
+
+            case NodeType.FOR:
+                nodePaths.unshift('for[' + nodeParent.anode.directives['for'].raw + ']'); // eslint-disable-line dot-notation
+                break;
+
+            case NodeType.SLOT:
+                nodePaths.unshift('slot[' + (nodeParent.name || 'default') + ']');
+                break;
+
+            case NodeType.TPL:
+                nodePaths.unshift('template');
+                break;
+
+            case NodeType.CMPT:
+                nodePaths.unshift('component[' + (nodeParent.subTag || 'root') + ']');
+                break;
+
+            case NodeType.TEXT:
+                nodePaths.unshift('text');
+                break;
+        }
+
+        nodeParent = nodeParent.parent;
+    }
+
+    return nodePaths;
+}
 // #[end]
 
 // exports = module.exports = getNodePath;
@@ -4218,48 +4298,48 @@ function TextNode(aNode, owner, scope, parent, reverseWalker) {
     this.parent = parent;
 
     // #[begin] reverse
-//     if (reverseWalker) {
-//         var currentNode = reverseWalker.current;
-//         if (currentNode) {
-//             switch (currentNode.nodeType) {
-//                 case 8:
-//                     if (currentNode.data === 's-text') {
-//                         this.sel = currentNode;
-//                         currentNode.data = this.id;
-//                         reverseWalker.goNext();
-// 
-//                         while (1) { // eslint-disable-line
-//                             currentNode = reverseWalker.current;
-//                             if (!currentNode) {
-//                                 throw new Error('[SAN REVERSE ERROR] Text end flag not found. \nPaths: '
-//                                     + getNodePath(this).join(' > '));
-//                             }
-// 
-//                             if (isEndStump(currentNode, 'text')) {
-//                                 this.el = currentNode;
-//                                 reverseWalker.goNext();
-//                                 currentNode.data = this.id;
-//                                 break;
-//                             }
-// 
-//                             reverseWalker.goNext();
-//                         }
-//                     }
-//                     break;
-// 
-//                 case 3:
-//                     reverseWalker.goNext();
-//                     if (!this.aNode.textExpr.original) {
-//                         this.el = currentNode;
-//                     }
-//                     break;
-//             }
-//         }
-//         else {
-//             this.el = document.createTextNode('');
-//             insertBefore(this.el, reverseWalker.target, reverseWalker.current);
-//         }
-//     }
+    if (reverseWalker) {
+        var currentNode = reverseWalker.current;
+        if (currentNode) {
+            switch (currentNode.nodeType) {
+                case 8:
+                    if (currentNode.data === 's-text') {
+                        this.sel = currentNode;
+                        currentNode.data = this.id;
+                        reverseWalker.goNext();
+
+                        while (1) { // eslint-disable-line
+                            currentNode = reverseWalker.current;
+                            if (!currentNode) {
+                                throw new Error('[SAN REVERSE ERROR] Text end flag not found. \nPaths: '
+                                    + getNodePath(this).join(' > '));
+                            }
+
+                            if (isEndStump(currentNode, 'text')) {
+                                this.el = currentNode;
+                                reverseWalker.goNext();
+                                currentNode.data = this.id;
+                                break;
+                            }
+
+                            reverseWalker.goNext();
+                        }
+                    }
+                    break;
+
+                case 3:
+                    reverseWalker.goNext();
+                    if (!this.aNode.textExpr.original) {
+                        this.el = currentNode;
+                    }
+                    break;
+            }
+        }
+        else {
+            this.el = document.createTextNode('');
+            insertBefore(this.el, reverseWalker.target, reverseWalker.current);
+        }
+    }
     // #[end]
 }
 
@@ -4403,52 +4483,52 @@ function changesIsInDataRef(changes, dataRef) {
 // var removeEl = require('../browser/remove-el');
 
 // #[begin] reverse
-// /**
-//  * 元素子节点遍历操作类
-//  *
-//  * @inner
-//  * @class
-//  * @param {HTMLElement} el 要遍历的元素
-//  */
-// function DOMChildrenWalker(el) {
-//     this.raw = [];
-//     this.index = 0;
-//     this.target = el;
-// 
-//     var child = el.firstChild;
-//     var next;
-//     while (child) {
-//         next = child.nextSibling;
-// 
-//         switch (child.nodeType) {
-//             case 3:
-//                 if (/^\s*$/.test(child.data || child.textContent)) {
-//                     removeEl(child);
-//                 }
-//                 else {
-//                     this.raw.push(child);
-//                 }
-//                 break;
-// 
-//             case 1:
-//             case 8:
-//                 this.raw.push(child);
-//         }
-// 
-//         child = next;
-//     }
-// 
-//     this.current = this.raw[this.index];
-//     this.next = this.raw[this.index + 1];
-// }
-// 
-// /**
-//  * 往下走一个元素
-//  */
-// DOMChildrenWalker.prototype.goNext = function () {
-//     this.current = this.raw[++this.index];
-//     this.next = this.raw[this.index + 1];
-// };
+/**
+ * 元素子节点遍历操作类
+ *
+ * @inner
+ * @class
+ * @param {HTMLElement} el 要遍历的元素
+ */
+function DOMChildrenWalker(el) {
+    this.raw = [];
+    this.index = 0;
+    this.target = el;
+
+    var child = el.firstChild;
+    var next;
+    while (child) {
+        next = child.nextSibling;
+
+        switch (child.nodeType) {
+            case 3:
+                if (/^\s*$/.test(child.data || child.textContent)) {
+                    removeEl(child);
+                }
+                else {
+                    this.raw.push(child);
+                }
+                break;
+
+            case 1:
+            case 8:
+                this.raw.push(child);
+        }
+
+        child = next;
+    }
+
+    this.current = this.raw[this.index];
+    this.next = this.raw[this.index + 1];
+}
+
+/**
+ * 往下走一个元素
+ */
+DOMChildrenWalker.prototype.goNext = function () {
+    this.current = this.raw[++this.index];
+    this.next = this.raw[this.index + 1];
+};
 // #[end]
 
 // exports = module.exports = DOMChildrenWalker;
@@ -4513,33 +4593,33 @@ function Element(aNode, owner, scope, parent, reverseWalker) {
     this._toPhase('inited');
 
     // #[begin] reverse
-//     if (reverseWalker) {
-//         var currentNode = reverseWalker.current;
-// 
-//         if (!currentNode) {
-//             throw new Error('[SAN REVERSE ERROR] Element not found. \nPaths: '
-//                 + getNodePath(this).join(' > '));
-//         }
-// 
-//         if (currentNode.nodeType !== 1) {
-//             throw new Error('[SAN REVERSE ERROR] Element type not match, expect 1 but '
-//                 + currentNode.nodeType + '.\nPaths: '
-//                 + getNodePath(this).join(' > '));
-//         }
-// 
-//         if (currentNode.tagName.toLowerCase() !== this.tagName) {
-//             throw new Error('[SAN REVERSE ERROR] Element tagName not match, expect '
-//                 + this.tagName + ' but meat ' + currentNode.tagName.toLowerCase() + '.\nPaths: '
-//                 + getNodePath(this).join(' > '));
-//         }
-// 
-//         this.el = currentNode;
-//         reverseWalker.goNext();
-// 
-//         reverseElementChildren(this);
-// 
-//         this._attached();
-//     }
+    if (reverseWalker) {
+        var currentNode = reverseWalker.current;
+
+        if (!currentNode) {
+            throw new Error('[SAN REVERSE ERROR] Element not found. \nPaths: '
+                + getNodePath(this).join(' > '));
+        }
+
+        if (currentNode.nodeType !== 1) {
+            throw new Error('[SAN REVERSE ERROR] Element type not match, expect 1 but '
+                + currentNode.nodeType + '.\nPaths: '
+                + getNodePath(this).join(' > '));
+        }
+
+        if (currentNode.tagName.toLowerCase() !== this.tagName) {
+            throw new Error('[SAN REVERSE ERROR] Element tagName not match, expect '
+                + this.tagName + ' but meat ' + currentNode.tagName.toLowerCase() + '.\nPaths: '
+                + getNodePath(this).join(' > '));
+        }
+
+        this.el = currentNode;
+        reverseWalker.goNext();
+
+        reverseElementChildren(this);
+
+        this._attached();
+    }
     // #[end]
 }
 
@@ -4675,59 +4755,59 @@ function nodeDispose(node) {
 // var TemplateNode = require('./template-node');
 
 // #[begin] reverse
-// /**
-//  * 通过组件反解创建节点
-//  *
-//  * @param {ANode} aNode 抽象节点
-//  * @param {DOMChildrenWalker} reverseWalker 子元素遍历对象
-//  * @param {Node} parent 父亲节点
-//  * @param {Model=} scope 所属数据环境
-//  * @return {Node}
-//  */
-// function createReverseNode(aNode, reverseWalker, parent, scope) {
-//     var parentIsComponent = parent.nodeType === NodeType.CMPT;
-//     var owner = parentIsComponent ? parent : (parent.childOwner || parent.owner);
-//     scope = scope || (parentIsComponent ? parent.data : (parent.childScope || parent.scope));
-// 
-//     if (aNode.textExpr) {
-//         return new TextNode(aNode, owner, scope, parent, reverseWalker);
-//     }
-// 
-//     if (aNode.directives['if']) { // eslint-disable-line dot-notation
-//         return new IfNode(aNode, owner, scope, parent, reverseWalker);
-//     }
-// 
-//     if (aNode.directives['for']) { // eslint-disable-line dot-notation
-//         return new ForNode(aNode, owner, scope, parent, reverseWalker);
-//     }
-// 
-//     if (hotTags[aNode.tagName]) {
-//         return new Element(aNode, owner, scope, parent, reverseWalker);
-//     }
-// 
-//     switch (aNode.tagName) {
-//         case 'slot':
-//             return new SlotNode(aNode, owner, scope, parent, reverseWalker);
-// 
-//         case 'template':
-//             return new TemplateNode(aNode, owner, scope, parent, reverseWalker);
-// 
-//         default:
-//             var ComponentType = owner.getComponentType(aNode);
-//             if (ComponentType) {
-//                 return new ComponentType({
-//                     aNode: aNode,
-//                     owner: owner,
-//                     scope: scope,
-//                     parent: parent,
-//                     subTag: aNode.tagName,
-//                     reverseWalker: reverseWalker
-//                 });
-//             }
-//     }
-// 
-//     return new Element(aNode, owner, scope, parent, reverseWalker);
-// }
+/**
+ * 通过组件反解创建节点
+ *
+ * @param {ANode} aNode 抽象节点
+ * @param {DOMChildrenWalker} reverseWalker 子元素遍历对象
+ * @param {Node} parent 父亲节点
+ * @param {Model=} scope 所属数据环境
+ * @return {Node}
+ */
+function createReverseNode(aNode, reverseWalker, parent, scope) {
+    var parentIsComponent = parent.nodeType === NodeType.CMPT;
+    var owner = parentIsComponent ? parent : (parent.childOwner || parent.owner);
+    scope = scope || (parentIsComponent ? parent.data : (parent.childScope || parent.scope));
+
+    if (aNode.textExpr) {
+        return new TextNode(aNode, owner, scope, parent, reverseWalker);
+    }
+
+    if (aNode.directives['if']) { // eslint-disable-line dot-notation
+        return new IfNode(aNode, owner, scope, parent, reverseWalker);
+    }
+
+    if (aNode.directives['for']) { // eslint-disable-line dot-notation
+        return new ForNode(aNode, owner, scope, parent, reverseWalker);
+    }
+
+    if (hotTags[aNode.tagName]) {
+        return new Element(aNode, owner, scope, parent, reverseWalker);
+    }
+
+    switch (aNode.tagName) {
+        case 'slot':
+            return new SlotNode(aNode, owner, scope, parent, reverseWalker);
+
+        case 'template':
+            return new TemplateNode(aNode, owner, scope, parent, reverseWalker);
+
+        default:
+            var ComponentType = owner.getComponentType(aNode);
+            if (ComponentType) {
+                return new ComponentType({
+                    aNode: aNode,
+                    owner: owner,
+                    scope: scope,
+                    parent: parent,
+                    subTag: aNode.tagName,
+                    reverseWalker: reverseWalker
+                });
+            }
+    }
+
+    return new Element(aNode, owner, scope, parent, reverseWalker);
+}
 // #[end]
 
 // exports = module.exports = createReverseNode;
@@ -5024,20 +5104,20 @@ function SlotNode(aNode, owner, scope, parent, reverseWalker) {
     owner.slotChildren.push(this);
 
     // #[begin] reverse
-//     if (reverseWalker) {
-// 
-//         this.sel = document.createComment(this.id);
-//         insertBefore(this.sel, reverseWalker.target, reverseWalker.current);
-// 
-//         each(this.aNode.children, function (aNodeChild) {
-//             me.children.push(createReverseNode(aNodeChild, reverseWalker, me));
-//         });
-// 
-//         this.el = document.createComment(this.id);
-//         insertBefore(this.el, reverseWalker.target, reverseWalker.current);
-// 
-//         this._toPhase('attached');
-//     }
+    if (reverseWalker) {
+
+        this.sel = document.createComment(this.id);
+        insertBefore(this.sel, reverseWalker.target, reverseWalker.current);
+
+        each(this.aNode.children, function (aNodeChild) {
+            me.children.push(createReverseNode(aNodeChild, reverseWalker, me));
+        });
+
+        this.el = document.createComment(this.id);
+        insertBefore(this.el, reverseWalker.target, reverseWalker.current);
+
+        this._toPhase('attached');
+    }
     // #[end]
 }
 
@@ -5375,20 +5455,20 @@ function ForNode(aNode, owner, scope, parent, reverseWalker) {
     this.param = aNode.directives['for']; // eslint-disable-line dot-notation
 
     // #[begin] reverse
-//     if (reverseWalker) {
-//         var me = this;
-//         each(
-//             evalExpr(this.param.value, this.scope, this.owner),
-//             function (item, i) {
-//                 var itemScope = new ForItemData(me, item, i);
-//                 var child = createReverseNode(me.itemANode, reverseWalker, me, itemScope);
-//                 me.children.push(child);
-//             }
-//         );
-// 
-//         this._create();
-//         insertBefore(this.el, reverseWalker.target, reverseWalker.current);
-//     }
+    if (reverseWalker) {
+        var me = this;
+        each(
+            evalExpr(this.param.value, this.scope, this.owner),
+            function (item, i) {
+                var itemScope = new ForItemData(me, item, i);
+                var child = createReverseNode(me.itemANode, reverseWalker, me, itemScope);
+                me.children.push(child);
+            }
+        );
+
+        this._create();
+        insertBefore(this.el, reverseWalker.target, reverseWalker.current);
+    }
     // #[end]
 }
 
@@ -5818,35 +5898,35 @@ function IfNode(aNode, owner, scope, parent, reverseWalker) {
     this.cond = this.aNode.directives['if'].value; // eslint-disable-line dot-notation
 
     // #[begin] reverse
-//     if (reverseWalker) {
-//         if (evalExpr(this.cond, this.scope, this.owner)) {
-//             this.elseIndex = -1;
-//             this.children[0] = createReverseNode(
-//                 rinseCondANode(aNode),
-//                 reverseWalker,
-//                 this
-//             );
-//         }
-//         else {
-//             var me = this;
-//             each(aNode.elses, function (elseANode, index) {
-//                 var elif = elseANode.directives.elif;
-// 
-//                 if (!elif || elif && evalExpr(elif.value, me.scope, me.owner)) {
-//                     me.elseIndex = index;
-//                     me.children[0] = createReverseNode(
-//                         rinseCondANode(elseANode),
-//                         reverseWalker,
-//                         me
-//                     );
-//                     return false;
-//                 }
-//             });
-//         }
-// 
-//         this._create();
-//         insertBefore(this.el, reverseWalker.target, reverseWalker.current);
-//     }
+    if (reverseWalker) {
+        if (evalExpr(this.cond, this.scope, this.owner)) {
+            this.elseIndex = -1;
+            this.children[0] = createReverseNode(
+                rinseCondANode(aNode),
+                reverseWalker,
+                this
+            );
+        }
+        else {
+            var me = this;
+            each(aNode.elses, function (elseANode, index) {
+                var elif = elseANode.directives.elif;
+
+                if (!elif || elif && evalExpr(elif.value, me.scope, me.owner)) {
+                    me.elseIndex = index;
+                    me.children[0] = createReverseNode(
+                        rinseCondANode(elseANode),
+                        reverseWalker,
+                        me
+                    );
+                    return false;
+                }
+            });
+        }
+
+        this._create();
+        insertBefore(this.el, reverseWalker.target, reverseWalker.current);
+    }
     // #[end]
 }
 
@@ -5984,20 +6064,20 @@ function TemplateNode(aNode, owner, scope, parent, reverseWalker) {
     this.children = [];
 
     // #[begin] reverse
-//     if (reverseWalker) {
-//         this.sel = document.createComment(this.id);
-//         insertBefore(this.sel, reverseWalker.target, reverseWalker.current);
-// 
-//         var me = this;
-//         each(this.aNode.children, function (aNodeChild) {
-//             me.children.push(createReverseNode(aNodeChild, reverseWalker, me));
-//         });
-// 
-//         this.el = document.createComment(this.id);
-//         insertBefore(this.el, reverseWalker.target, reverseWalker.current);
-// 
-//         this._toPhase('attached');
-//     }
+    if (reverseWalker) {
+        this.sel = document.createComment(this.id);
+        insertBefore(this.sel, reverseWalker.target, reverseWalker.current);
+
+        var me = this;
+        each(this.aNode.children, function (aNodeChild) {
+            me.children.push(createReverseNode(aNodeChild, reverseWalker, me));
+        });
+
+        this.el = document.createComment(this.id);
+        insertBefore(this.el, reverseWalker.target, reverseWalker.current);
+
+        this._toPhase('attached');
+    }
     // #[end]
 }
 
@@ -6044,23 +6124,23 @@ TemplateNode.prototype._update = function (changes) {
 // var createReverseNode = require('./create-reverse-node');
 
 // #[begin] reverse
-// 
-// /**
-//  * 对元素的子节点进行反解
-//  *
-//  * @param {Object} element 元素
-//  */
-// function reverseElementChildren(element) {
-//     var htmlDirective = element.aNode.directives.html;
-// 
-//     if (!htmlDirective) {
-//         var reverseWalker = new DOMChildrenWalker(element.el);
-// 
-//         each(element.aNode.children, function (aNodeChild) {
-//             element.children.push(createReverseNode(aNodeChild, reverseWalker, element));
-//         });
-//     }
-// }
+
+/**
+ * 对元素的子节点进行反解
+ *
+ * @param {Object} element 元素
+ */
+function reverseElementChildren(element) {
+    var htmlDirective = element.aNode.directives.html;
+
+    if (!htmlDirective) {
+        var reverseWalker = new DOMChildrenWalker(element.el);
+
+        each(element.aNode.children, function (aNodeChild) {
+            element.children.push(createReverseNode(aNodeChild, reverseWalker, element));
+        });
+    }
+}
 // #[end]
 
 // exports = module.exports = reverseElementChildren;
@@ -6760,29 +6840,29 @@ function Component(options) { // eslint-disable-line
     this.id = guid();
 
     // #[begin] reverse
-//     if (this.el) {
-//         var firstCommentNode = this.el.firstChild;
-//         if (firstCommentNode.nodeType === 3) {
-//             firstCommentNode = firstCommentNode.nextSibling;
-//         }
-// 
-//         if (firstCommentNode && firstCommentNode.nodeType === 8) {
-//             var stumpMatch = firstCommentNode.data.match(/^\s*s-data:([\s\S]+)?$/);
-//             if (stumpMatch) {
-//                 var stumpText = stumpMatch[1];
-// 
-//                 // fill component data
-//                 options.data = (new Function(
-//                     'return ' + stumpText.replace(/^[\s\n]*/, '')
-//                 ))();
-// 
-//                 if (firstCommentNode.previousSibling) {
-//                     removeEl(firstCommentNode.previousSibling);
-//                 }
-//                 removeEl(firstCommentNode);
-//             }
-//         }
-//     }
+    if (this.el) {
+        var firstCommentNode = this.el.firstChild;
+        if (firstCommentNode.nodeType === 3) {
+            firstCommentNode = firstCommentNode.nextSibling;
+        }
+
+        if (firstCommentNode && firstCommentNode.nodeType === 8) {
+            var stumpMatch = firstCommentNode.data.match(/^\s*s-data:([\s\S]+)?$/);
+            if (stumpMatch) {
+                var stumpText = stumpMatch[1];
+
+                // fill component data
+                options.data = (new Function(
+                    'return ' + stumpText.replace(/^[\s\n]*/, '')
+                ))();
+
+                if (firstCommentNode.previousSibling) {
+                    removeEl(firstCommentNode.previousSibling);
+                }
+                removeEl(firstCommentNode);
+            }
+        }
+    }
     // #[end]
 
     // native事件数组
@@ -6868,23 +6948,23 @@ function Component(options) { // eslint-disable-line
     this._toPhase('inited');
 
     // #[begin] reverse
-//     if (this.el) {
-//         reverseElementChildren(this);
-//         this._attached();
-//     }
-// 
-//     var walker = options.reverseWalker;
-//     if (walker) {
-//         var currentNode = walker.current;
-//         if (currentNode && currentNode.nodeType === 1) {
-//             this.el = currentNode;
-//             walker.goNext();
-//         }
-// 
-//         reverseElementChildren(this);
-// 
-//         this._attached();
-//     }
+    if (this.el) {
+        reverseElementChildren(this);
+        this._attached();
+    }
+
+    var walker = options.reverseWalker;
+    if (walker) {
+        var currentNode = walker.current;
+        if (currentNode && currentNode.nodeType === 1) {
+            this.el = currentNode;
+            walker.goNext();
+        }
+
+        reverseElementChildren(this);
+
+        this._attached();
+    }
     // #[end]
 }
 
@@ -9246,3 +9326,234 @@ function camelComponentBinds(binds) {
     emitDevtool.start(san);
     // #[end]
 })(this);
+
+},{}],2:[function(require,module,exports) {
+'use strict';
+
+var _sanDev = require('san/dist/san.dev.js');
+
+var _sanDev2 = _interopRequireDefault(_sanDev);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MyComponent = _sanDev2.default.defineComponent({
+    template: '' + '<div>' + '<table>' + '<tr>' + '<th>姓名</th>' + '<th>审核状态</th>' + '<th>操作</th>' + '</tr>' + '<tr s-for="p ,index in list">' + '<td>{{p.name}}</td>' + '<td>{{p.status === 1?"合格":(p.status === 2?"待审核":"不合格")}}</td>' + '<td><a href="javascript:void(0)" on-click="show(index)">{{p.status===2?"审核":"删除"}}</a></td>' + '</tr>' + '</table>' + '<lable>姓名：<input type="text" value="{= new.name =}"></lable>' + '<lable>状态：' + '<select value="{= new.status =}">' + '<option value="1">合格</option>' + '<option value="2">待审核</option>' + '<option value="3">不合格</option>' + '</select>' + '</lable>' + '<a href="javascript:void(0)" on-click="new">新增</a>' + '</div>',
+    initData: function initData() {
+        return {
+            new: {
+                name: '',
+                status: ''
+            },
+            list: [{
+                name: '张三',
+                status: 1
+            }, {
+                name: "李四",
+                status: 3
+            }, {
+                name: "王五",
+                status: 2
+            }, {
+                name: "赵六",
+                status: 2
+            }, {
+                name: "孙七",
+                status: 2
+            }]
+        };
+    },
+    show: function show(index) {
+        var a = this.data.get('list')[index].status;
+        if (a === 2) {
+            this.data.set('list[' + index + '].status', 1); //
+        } else {
+            this.data.removeAt('list', index);
+        }
+    },
+    new: function _new() {
+        var a = this.data.get('new');
+        if (isNaN(a.status)) {
+            alert('请输入有效状态码,1：合格，2：待审核，3：不合格');
+            return;
+        }
+        a.status = Number(a.status);
+        this.data.push('list', a);
+    }
+}); // 使用循环指令渲染表格
+// 根据不同的审核状态值，显示对应的状态文案和操作按钮
+// 点击「添加」按钮，增加一条数据项；点击「删除」按钮，删除该条数据；点击「审核」按钮，将审核状态修改为合格
+
+var myComponent = new MyComponent();
+myComponent.attach(document.body);
+console.log(myComponent);
+},{"san/dist/san.dev.js":7}],19:[function(require,module,exports) {
+
+var OVERLAY_ID = '__parcel__error__overlay__';
+
+var global = (1, eval)('this');
+var OldModule = module.bundle.Module;
+
+function Module(moduleName) {
+  OldModule.call(this, moduleName);
+  this.hot = {
+    data: module.bundle.hotData,
+    _acceptCallbacks: [],
+    _disposeCallbacks: [],
+    accept: function (fn) {
+      this._acceptCallbacks.push(fn || function () {});
+    },
+    dispose: function (fn) {
+      this._disposeCallbacks.push(fn);
+    }
+  };
+
+  module.bundle.hotData = null;
+}
+
+module.bundle.Module = Module;
+
+var parent = module.bundle.parent;
+if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
+  var hostname = '' || location.hostname;
+  var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '10306' + '/');
+  ws.onmessage = function (event) {
+    var data = JSON.parse(event.data);
+
+    if (data.type === 'update') {
+      data.assets.forEach(function (asset) {
+        hmrApply(global.parcelRequire, asset);
+      });
+
+      data.assets.forEach(function (asset) {
+        if (!asset.isNew) {
+          hmrAccept(global.parcelRequire, asset.id);
+        }
+      });
+    }
+
+    if (data.type === 'reload') {
+      ws.close();
+      ws.onclose = function () {
+        location.reload();
+      };
+    }
+
+    if (data.type === 'error-resolved') {
+      console.log('[parcel] ✨ Error resolved');
+
+      removeErrorOverlay();
+    }
+
+    if (data.type === 'error') {
+      console.error('[parcel] 🚨  ' + data.error.message + '\n' + data.error.stack);
+
+      removeErrorOverlay();
+
+      var overlay = createErrorOverlay(data);
+      document.body.appendChild(overlay);
+    }
+  };
+}
+
+function removeErrorOverlay() {
+  var overlay = document.getElementById(OVERLAY_ID);
+  if (overlay) {
+    overlay.remove();
+  }
+}
+
+function createErrorOverlay(data) {
+  var overlay = document.createElement('div');
+  overlay.id = OVERLAY_ID;
+
+  // html encode message and stack trace
+  var message = document.createElement('div');
+  var stackTrace = document.createElement('pre');
+  message.innerText = data.error.message;
+  stackTrace.innerText = data.error.stack;
+
+  overlay.innerHTML = '<div style="background: black; font-size: 16px; color: white; position: fixed; height: 100%; width: 100%; top: 0px; left: 0px; padding: 30px; opacity: 0.85; font-family: Menlo, Consolas, monospace; z-index: 9999;">' + '<span style="background: red; padding: 2px 4px; border-radius: 2px;">ERROR</span>' + '<span style="top: 2px; margin-left: 5px; position: relative;">🚨</span>' + '<div style="font-size: 18px; font-weight: bold; margin-top: 20px;">' + message.innerHTML + '</div>' + '<pre>' + stackTrace.innerHTML + '</pre>' + '</div>';
+
+  return overlay;
+}
+
+function getParents(bundle, id) {
+  var modules = bundle.modules;
+  if (!modules) {
+    return [];
+  }
+
+  var parents = [];
+  var k, d, dep;
+
+  for (k in modules) {
+    for (d in modules[k][1]) {
+      dep = modules[k][1][d];
+      if (dep === id || Array.isArray(dep) && dep[dep.length - 1] === id) {
+        parents.push(+k);
+      }
+    }
+  }
+
+  if (bundle.parent) {
+    parents = parents.concat(getParents(bundle.parent, id));
+  }
+
+  return parents;
+}
+
+function hmrApply(bundle, asset) {
+  var modules = bundle.modules;
+  if (!modules) {
+    return;
+  }
+
+  if (modules[asset.id] || !bundle.parent) {
+    var fn = new Function('require', 'module', 'exports', asset.generated.js);
+    asset.isNew = !modules[asset.id];
+    modules[asset.id] = [fn, asset.deps];
+  } else if (bundle.parent) {
+    hmrApply(bundle.parent, asset);
+  }
+}
+
+function hmrAccept(bundle, id) {
+  var modules = bundle.modules;
+  if (!modules) {
+    return;
+  }
+
+  if (!modules[id] && bundle.parent) {
+    return hmrAccept(bundle.parent, id);
+  }
+
+  var cached = bundle.cache[id];
+  bundle.hotData = {};
+  if (cached) {
+    cached.hot.data = bundle.hotData;
+  }
+
+  if (cached && cached.hot && cached.hot._disposeCallbacks.length) {
+    cached.hot._disposeCallbacks.forEach(function (cb) {
+      cb(bundle.hotData);
+    });
+  }
+
+  delete bundle.cache[id];
+  bundle(id);
+
+  cached = bundle.cache[id];
+  if (cached && cached.hot && cached.hot._acceptCallbacks.length) {
+    cached.hot._acceptCallbacks.forEach(function (cb) {
+      cb();
+    });
+    return true;
+  }
+
+  return getParents(global.parcelRequire, id).some(function (id) {
+    return hmrAccept(global.parcelRequire, id);
+  });
+}
+},{}]},{},[19,2])
+//# sourceMappingURL=/script.967f41a3.map
