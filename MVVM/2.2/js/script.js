@@ -66,10 +66,6 @@ var MyComponent = san.defineComponent({
     },
     new:function(){
         var a = this.data.get('new');
-        if(isNaN(a.status)){
-            alert('请输入有效状态码,1：合格，2：待审核，3：不合格');
-            return;
-        }
         a.status = Number(a.status);
         this.data.push('list',a);
     }
