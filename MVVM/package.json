@@ -14,5 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "san": "^3.5.7"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3"
   }
 }
