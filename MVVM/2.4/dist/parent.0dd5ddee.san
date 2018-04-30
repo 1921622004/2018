@@ -1,0 +1,9 @@
+<template>
+    <div class="parent">
+        <div class="child">子组件：
+            <input type="text" value="{= input =}">
+            <a href="javascript:void(0)">通知父组件</a>
+        </div>
+        <p> 我是父组件：静静等待用户输入</p>
+    </div>
+</template>

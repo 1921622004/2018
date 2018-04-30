@@ -1,0 +1,32 @@
+.wrapper {
+    margin: 10px auto;
+    background-color: #f4f4f4;
+    width: 500px;
+    height: 200px;
+    text-align: center;
+    border: 1px solid transparent;
+    font-size: 20px;
+}
+
+.wrapper {
+    color: lightcoral;
+}
+
+.child,
+.parent {
+    margin: 20px auto;
+}
+
+.child a {
+    text-decoration: none;
+    color: #eee;
+    display: inline-block;
+    width: 100px;
+    background-color: skyblue;
+
+    border: 1px solid #dedede;
+}
+
+.parent {
+    color: lightgreen;
+}
