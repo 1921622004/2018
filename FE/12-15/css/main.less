@@ -1,0 +1,328 @@
+
+//  1.最左侧一列要求自适应浏览器高度，左上面4个按钮相对浏览器左上角固定位置，
+//    左下方两个按钮相对浏览器左下角固定位置
+//  2.左侧第二列(蓝色背景色)导航列固定宽度，高度也是自适应浏览器高度，
+//    最下面的Monthly Goals部分的内容相对浏览器下边固定位置
+//  3.整个白色区域自适应宽度，右上方的人脸，名字部分相对浏览器右上角固定位置
+//  4.白色区域左侧列固定宽度，右侧列自适应宽度
+
+html,body{
+    overflow-x: hidden;
+}
+.clearfix{
+    overflow: hidden;
+}
+
+.active::before{
+    content: "";
+    position: absolute;
+    left: -22px;
+    top: 50%;
+    margin-top: -2px;
+    display: block;
+    width: 4px;
+    height: 4px;
+    background-color: #2b9ff7;
+    border-radius: 50%;
+}
+a{
+    text-decoration: none;
+}
+
+.menu{
+    position: fixed;
+    left: 0;
+    width: 100px;
+    height: 100%;
+    background-color: #1d2531;
+    li{
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin-left: 20px;
+        margin-top: 20px;
+        position: relative;
+    }
+    li:first-child{
+        background: url("../images/Item-1.png") no-repeat center #2b9ff7;
+    }
+    li:nth-child(2){
+        background: url("../images/Item-2.png") no-repeat center #9684e3;
+    }
+    li:nth-child(3){
+        background: url("../images/Item-3.png") no-repeat center #e8462a;
+    }
+    li:nth-child(4){
+        width: 56px;
+        height: 56px;
+        background: url("../images/Plus-Icon.png") no-repeat center;
+        border: 4px solid #2d3848;
+    }
+    .menu-bot{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding-bottom: 20px;
+        a{
+            display: inline-block;
+            margin-left: 15px;
+        }
+        a:first-child{
+            margin: 0;
+        }
+    }
+}
+
+.secondMenu{
+    position: fixed;
+    left: 100px;
+    width: 250px;
+    height: 100%;
+    background-color: #222c3c;
+    overflow: hidden;
+    .content{
+        width: 270px;
+        padding-left: 30px;
+        overflow-y: auto;
+        height: 100%;
+    }
+    h3{
+        color: #5b6779;
+        font-size: 12px;
+        line-height: 40px;
+        position: relative;
+    }
+    h3::after{
+        content: "";
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        margin-top: -8.5px;
+        width: 17px;
+        height: 17px;
+        background: url("../images/Settings.png") no-repeat center;
+    }
+    li{
+        position: relative;
+        vertical-align: middle;
+        .new-a{
+            float: right;
+            display: block;
+            margin-top: 6px;
+            border-radius: 12px;
+            padding: 6px;
+            color: #eee;
+            line-height: 12px;
+            text-align: center;
+            background-color: #1a93ec;
+        }
+    }
+    li a{
+        color: #b7c0cd;
+        font-size: 14px;
+        line-height: 36px;
+    }
+    .ul-wrapper{
+        width: 190px;
+        padding: 20px 0 14px; 
+        border-bottom: 2px solid #2a3547;
+    }
+    .y-p{
+        span{
+            display: inline-block;
+            background-image: url('../images/Book-of-Wisdom.png');
+            background-repeat: no-repeat;
+            width: 20px;
+            height: 17px;
+            
+        }
+        li:nth-child(2) span{
+            background-position: 0 -38px;
+        }
+        li:nth-child(3) span{
+            background-position: 0 -74px;
+        }
+        li:nth-child(4) span{
+            background-position: 0 -110x;
+        }
+    }
+    .second-bot{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background-color: #38475e;
+        text-align: center;
+        padding: 20px 0 23px;
+        p,span{
+            color: #eee;
+            display: inline-block;
+            font-size: 14px;
+            height: 14px;
+            line-height: 14px;
+        }
+        .line{
+            display: inline-block;
+            width: 190px;
+            height: 4px;
+            background-color: #2d3848;
+            border-radius: 2px;
+            .mask{
+                width: 50px;
+                border-radius: 2px;
+                background-color: #8c71e5;
+                height: 100%;
+            }
+        }
+    }
+}
+
+.messages{
+    margin-left: 350px;
+    position: relative;
+    header{
+        height: 80px;
+        h2{
+            float: left;
+            font-size: 24px;
+            line-height: 80px;
+            margin-left: 30px;
+        }
+        .user-icon{
+            float: right;
+            margin-top: 14px;
+            p{
+                color: #1a93ec;
+            }
+        }
+        border-bottom: 2px solid #e6e9ec;
+    }
+    .friend{
+        float: left;
+        width: 400px;
+        .search{
+            
+            height: 70px;
+            text-align: center;
+            border-bottom: 1px solid #e6e9ec;
+            border-right: 1px solid #e6e9ec;
+            line-height: 70px;
+            position: relative;
+            input{
+                display: inline-block;
+                width: 326px;
+                padding-left: 14px;
+                height: 35px;
+                outline: 0;
+                font-size: 14px;
+                color: #b7c0cd;
+                border-radius: 4px;
+                border: 1px solid #b7c0cd;
+            }
+            i{
+                // display: inline-block;
+                cursor: pointer;
+                position: absolute;
+                width: 17px;
+                height: 20px;
+                background: url("../images/xb.png") no-repeat;
+                background-position: -16px 0;
+                top: 25px;
+                right: 40px;
+            }
+        }
+        li{
+            padding: 15px 20px 18px 30px;
+            border-bottom: 1px solid #e6e9ec;
+            border-right: 1px solid #e6e9ec;
+            .user-icon{
+                overflow: hidden;
+                
+                img{
+                    height: 45px;
+                    width: 45px;
+                }
+            }
+            p{
+                color: #585d68;
+                font-size: 14px;
+                line-height: 19px;
+            }
+        }
+    }
+    .chat{
+        margin-left: 400px;
+        h2{
+            line-height: 70px;
+            font-size: 18px;
+            padding-left: 30px;
+            border-bottom: 1px solid #e6e9ec;
+        }
+        li{
+            padding: 24px 0 10px 30px;
+            border-bottom: 1px solid #e6e9ec;
+            span{
+                line-height: 19px;
+            }
+        }
+        li:last-child{
+            border: none;
+        }
+    }
+}   
+
+.user-icon{
+    position: relative;
+    .img-wrapper{
+        float: left;
+        img{
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+        }
+        a{
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .info-wrapper{
+        padding-left: 65px;
+        p{
+            margin-top: 6px;
+            font-size: 16px;
+            display: inline-block;
+        }
+        span{
+            display: block;
+            font-size: 14px;
+            color: #b5b5b5;
+        }
+        .time{
+            display: inline-block;
+            color: #7f8fa4;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+    }
+}
+
+.border{
+    height: 10px;
+    display: flex;
+    line-height: 20px;  
+    text-align: center;
+    .line{
+        margin-top: 10px;
+        border-top: 1px solid #ccc ;
+        flex: 1;
+    } 
+    .txt{
+        width: 86px;
+        display: inline-block;
+        color: #686868;  
+        vertical-align: middle; 
+    }
+    
+}
