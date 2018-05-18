@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input id="name" type="text">
+    <button id="submit-btn">Submit</button>
+    <script>
+        ~function(){
+            let name = document.getElementById('name'),
+                submitBtn = document.getElementById('submit-btn'),
+                logFn = function(){
+                    let value = name.value;
+                    console.log(value)
+                };
+            submitBtn.onclick = logFn;
+
+            /*
+             * onkeydown获取到的是键盘事件对象，onkeyup也是，可以通过e.keycode 或者e.which获取到对应的键盘码
+             * 然后判断键盘码做出不同反应
+             * oninput 获取到的是Input Event  而且按下ESC 和 ENTER的时候是不能触发这两个事件的
+             */
+
+            name.onkeydown = function(e){
+                console.log(e);
+                
+                if(e.keyCode === 13){
+                    logFn()
+                }else if(e.keyCode === 27){
+                    name.value = ''
+                }
+            }
+        }()
+    </script>
+</body>
+</html>
