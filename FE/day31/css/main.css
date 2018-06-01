@@ -15,3 +15,7 @@ th,td{
     line-height: 20px;
     text-align: center;
 }
+td input{
+    display: inline-block;
+    width: 60px;
+}
