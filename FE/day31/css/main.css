@@ -1,0 +1,17 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+td,th{
+    border: 1px solid lightgray;
+}
+tabel{
+    border-collapse: collapse;
+    margin: 50px auto;
+}
+th,td{
+    width: 100px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+}
