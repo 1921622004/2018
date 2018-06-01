@@ -3,7 +3,7 @@ let url = require('url');
 let fs = require('fs');
 let mime = require('mime')
 let port = 3000;
-let sourceData = require('./js/source.js');
+let sourceData = JSON.parse(fs.readFileSync('./js/source.json'));
 
 
 let server = http.createServer((req, res) => {
@@ -28,7 +28,10 @@ let server = http.createServer((req, res) => {
             str.replace(/(\w+)=(\w+)/g, (...arg) => {
                 obj[arg[1]] = arg[2];
             });
-            console.log(obj);
+            sourceData[obj.index].sale[obj.Index] = obj.value;
+            fs.writeFile('./js/source.json',JSON.stringify(sourceData),err =>{
+                console.log(err)
+            });
             res.writeHead(200,'ok');
             res.end();
             return
