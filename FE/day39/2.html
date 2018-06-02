@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="a" class="contABC">A</button>
+    <button id="b" class="contABC">B</button>
+    <button id="c" class="contABC">C</button>
+
+    <button id="d" class="contDEF">D</button>
+    <button id="e" class="contDEF">E</button>
+    <button id="f" class="contDEF">F</button>
+
+
+    <div id="contABC"></div>
+    <div id="contDEF"></div>
+
+</body>
+
+</html>
+<script>
+    let abc = Array.from(document.querySelectorAll('.contABC')),
+        def = Array.from(document.querySelectorAll('.contDEF')),
+        contABC = document.querySelector('#contABC'),
+        contDEF = document.querySelector('#contDEF');
+
+    /**
+     * 
+     */ 
+    let handleFn = function (nodeList, reg) {
+        nodeList.forEach(item => {
+            item.addEventListener('click', () => {
+                let hashStr = window.location.hash.substring(1);
+                if (reg.test(hashStr)) {
+                    console.log(1);
+
+                    hashStr = hashStr.replace(reg, () => {
+                        return ''
+                    });
+                }
+                window.location.hash = hashStr + item.innerHTML;
+            })
+        })
+    };
+    handleFn(abc,/(A|B|C)/g);
+    handleFn(def,/(D|E|F)/g);
+
+    let hashObeserver = function () {
+        let hash = window.location.hash.substring(1);
+        if (hash === '') return;
+        let abc = hash.match(/(A|B|C)/)[0];
+        let def = hash.match(/(D|E|F)/)[0];
+        contABC.innerHTML = abc;
+        contDEF.innerHTML = def;
+    }
+    hashObeserver();
+    window.onhashchange = hashObeserver;
+</script>
